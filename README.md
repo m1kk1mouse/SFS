@@ -12,3 +12,10 @@ By using pip:
 From repository:
 
 > $ sudo apt-get install python3-pyftpdlib
+
+## Server Management:
+Run:
+> $ sudo python3 server.py
+
+Stop:
+> $ ps -ef | grep ftpserver | grep -v grep | awk '{print $2}'

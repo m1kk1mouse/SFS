@@ -1,6 +1,14 @@
+import signal
+import sys
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
+
+ADDRESS = '127.0.0.1'
+PORT = 5454
+USER = "q"
+PASS = "qwerty"
+DIRECTORY = "/home/q/ftp"
 
 print (" _____ _____ ____ ")
 print ("|  ___|_   _|  _ \ ")
@@ -8,12 +16,13 @@ print ("| |_    | | | |_) |")
 print ("|  _|   | | |  __/ ")
 print ("|_|     |_| |_|  ")
 print ("")
+print('The server is running on {host} use port {port} ...'.format(host=ADDRESS,port=PORT))
+print("To stop the server, press Ctrl+C")
 
-ADDRESS = '127.0.0.1'
-PORT = 5454
-USER = "q"
-PASS = "qwerty"
-DIRECTORY = "/home/q/ftp"
+def signal_handler(signal, frame):
+    print("")
+    print("You press Ctrl+C, server is stopped. Bye <3 ")
+    sys.exit(0)
 
 def main():
     authorizer = DummyAuthorizer()
@@ -36,7 +45,7 @@ def main():
     server.max_cons = 100   #Maximum number of server connections
     server.max_cons_per_ip = 5  #Maximum number of server connections from a single IP
     handler.max_login_attempts = 2  #Maximum number of sign-in attempts
-
+    signal.signal(signal.SIGINT, signal_handler)
     server.serve_forever()  #Prevents the server from shutting down automatically
 
 if __name__ == '__main__':
